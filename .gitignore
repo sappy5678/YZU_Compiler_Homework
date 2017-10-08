@@ -1,0 +1,9 @@
+*.filters
+*.vcxproj
+*.idb
+*.tlog
+*.lastbuildstate
+*.sln
+*.opendb
+*.db
+*.ipch

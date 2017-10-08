@@ -1,0 +1,2 @@
+X =true; 
+Y =(false or X) and X ;
