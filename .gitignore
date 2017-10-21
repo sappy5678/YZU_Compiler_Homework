@@ -7,3 +7,5 @@
 *.opendb
 *.db
 *.ipch
+/hw1/hw1_program/.vs/hw1_program/v15/Solution.VC.db-wal
+/hw1/hw1_program/.vs/hw1_program/v15/Solution.VC.db-shm

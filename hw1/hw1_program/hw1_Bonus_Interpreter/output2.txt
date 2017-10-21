@@ -1,0 +1,32 @@
+push lvalue X
+push ture
+push false
+push false
+or
+and
+=
+push lvalue Y
+push false
+push ture
+and
+push ture
+or
+=
+push lvalue Cat
+push false
+push ture
+or
+push rvalue X
+and
+push false
+push ture
+or
+or
+=
+push lvalue X
+push rvalue X
+push rvalue Y
+or
+push rvalue Cat
+or
+=

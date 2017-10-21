@@ -1,0 +1,10 @@
+push lvalue X
+push ture
+=
+push lvalue Y
+push false
+push rvalue X
+or
+push rvalue X
+and
+=

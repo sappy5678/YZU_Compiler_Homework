@@ -1,0 +1,4 @@
+X = true and (false or false); 
+Y = false and true or true;
+Cat = (false or true) and X or (false or true);
+X = X or Y or Cat;

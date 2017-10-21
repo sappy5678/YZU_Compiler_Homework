@@ -1,3 +1,7 @@
+
+
+#ifndef LEXICAL_ANALYZER_HPP
+#define LEXICAL_ANALYZER_HPP
 #include <iostream>
 #include <string>
 #include<utility>
@@ -6,43 +10,47 @@
 using namespace std;
 // Todo 例外捕捉
 
-pair<int, int> lexical_analyzer();
-pair<int, int> lookup(string x);
-bool is_number(const char n);
-bool is_number(string n);
-bool is_alphabet(const char n);
-bool is_alphabet(string n);
-bool is_id(const char n);
-bool is_id(string n);
-bool is_terminal(const char n);
-bool is_empty(const char n);
+
+inline token lexical_analyzer();
+inline token lookup(string x);
+inline bool is_number(const char n);
+inline bool is_number(string n);
+inline bool is_alphabet(const char n);
+inline bool is_alphabet(string n);
+inline bool is_id(const char n);
+inline bool is_id(string n);
+inline bool is_terminal(const char n);
+inline bool is_empty(const char n);
+
 
 // Just for test
+/*
 int main(int argc, char* argv[])
 {
 	init();
 	fin.open(argv[1]);
 	for (unsigned i = 0;  ; ++i)
 	{
-		pair<int, int> tmp = lexical_analyzer();
-		if (tmp.first == SPECIAL && tmp.second == 1)
+		token tmp = lexical_analyzer();
+		if (tmp.type == SPECIAL && tmp.id == 1)
 			break;
-		if (tmp.first == 1)
-			cout << "< ID , " << tmp.second << ">，Value = '" << id_name[id_table[tmp.second].name] << "'" << endl;
+		if (tmp.type == 1)
+			cout << "< ID , " << tmp.id << ">，Value = '" << id_name[id_table[tmp.id].name] << "'" << endl;
 		else
-			cout << "< SPECIAL , " << tmp.second << ">，Value = '" << special_name[special_table[tmp.second].name] << "'" << endl;
+			cout << "< SPECIAL , " << tmp.id << ">，Value = '" << special_name[special_table[tmp.id].name] << "'" << endl;
 	}
 
 	system("pause");
 }
+*/
 
 /**
  * \brief input string and return token <type,index>
- * \return token<type,index> -> pair<int,int>  
+ * \return token<type,index> -> table_row  
  */
-pair<int,int> lexical_analyzer()
+token lexical_analyzer()
 {
-	// 用來描述目前 lexical analyzer 的狀態
+	// 用來描述目前 lexical analyzer 的狀態(沒用到)
 	// state = -1 代表是目前出現了錯誤
 	// state = 0 代表是目前讀的是特殊符號
 	// state = 1 代表是目前讀的是ID 以及 and or true flase 等
@@ -54,6 +62,12 @@ pair<int,int> lexical_analyzer()
 	// 跳過空字元
 	while(fin.get(next_character))
 	{
+		character_position++;
+		if(next_character == '\n')
+		{
+			character_position = 0;
+			line_position++;
+		}
 		if (!::is_empty(next_character))
 			break;
 	}
@@ -85,20 +99,20 @@ pair<int,int> lexical_analyzer()
 
 
 
-pair<int, int> lookup(const string x)
+ token lookup(const string x)
 {
 	// 先看看有沒有在關鍵字 + 特殊符號表中
 	for(unsigned i = 0 ; i < special_table.size(); ++i)
 	{
 		if (x == special_name[i])
-			return pair<int, int>(SPECIAL, i);
+			return token({ SPECIAL, static_cast<int>(i) });
 	}
 
 	// 沒有的話再去 ID 表查
 	for (unsigned i = 0; i < id_table.size(); ++i)
 	{
 		if (x == id_name[i])
-			return pair<int, int>(ID, i);
+			return token({ ID, static_cast<int>(i) });
 	}
 
 	// 都沒有就去 把它放在 ID 表中
@@ -106,10 +120,10 @@ pair<int, int> lookup(const string x)
 	id_table.push_back(table_row({ int(id_name.size()) - 1,0}));
 	
 	
-	return { ID,id_table.size()-1};
+	return { ID,static_cast<int>(id_table.size()-1)};
 }
 
-bool is_number(const char n)
+ bool is_number(const char n)
 {
 	if (n >= '0' && n <= '9')
 		return true;
@@ -117,7 +131,7 @@ bool is_number(const char n)
 		return false;
 }
 
-bool is_number(string n)
+ bool is_number(string n)
 {
 	for(unsigned i = 0;i < n.size();++i)
 	{
@@ -128,7 +142,7 @@ bool is_number(string n)
 	return true;
 }
 
-bool is_alphabet(const char n)
+ bool is_alphabet(const char n)
 {
 	// 大寫字母
 	if (n >= 'A' && n <= 'Z')
@@ -140,7 +154,7 @@ bool is_alphabet(const char n)
 		return false;
 }
 
-bool is_alphabet(string n)
+ bool is_alphabet(string n)
 {
 	for (unsigned i = 0; i < n.size(); ++i)
 	{
@@ -151,7 +165,7 @@ bool is_alphabet(string n)
 	return true;
 }
 
-bool is_id(const char n)
+ bool is_id(const char n)
 {
 	// 字母
 	if (is_alphabet(n))
@@ -166,7 +180,7 @@ bool is_id(const char n)
 		return false;
 }
 
-bool is_id(string n)
+ bool is_id(string n)
 {
 	for (unsigned i = 0; i < n.size(); ++i)
 	{
@@ -177,7 +191,7 @@ bool is_id(string n)
 	return true;
 }
 
-bool is_terminal(const char n)
+ bool is_terminal(const char n)
 {
 	if (n == ';' || n == '='|| n == '(' || n == ')')
 	{
@@ -186,7 +200,7 @@ bool is_terminal(const char n)
 	return false;
 }
 
-bool is_empty(const char n)
+ bool is_empty(const char n)
 {
 	if (n == ' ' || n == '\n' || n == '\t')
 	{
@@ -194,3 +208,6 @@ bool is_empty(const char n)
 	}
 	return false;
 }
+
+
+#endif

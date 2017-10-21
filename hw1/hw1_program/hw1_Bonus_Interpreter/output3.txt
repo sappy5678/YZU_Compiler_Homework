@@ -1,0 +1,11 @@
+push lvalue sea
+push false
+=
+push lvalue fish
+push ture
+=
+push lvalue Dog
+push ture
+push rvalue fish
+or
+=

@@ -1,0 +1,3 @@
+sea = false;
+fish = true;
+Dog= true or fish of sea;
